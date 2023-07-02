@@ -47,7 +47,11 @@ readJson()
       fileContent,
       { overwrite: true }
     );
-    outputFile.formatText();
+    outputFile.formatText({
+      baseIndentSize: 2,
+      indentSize: 2,
+      tabSize: 2,
+    });
     await project.save();
   });
 
