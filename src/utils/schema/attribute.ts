@@ -11,7 +11,7 @@ const renderAttribute = (
         name: Joi.string().allow('{{name}}').required(),
         default: Joi.{{type}}().allow('{{_default}}'),
         type: Joi.{{type}}().required(),
-      }),
+      })
     `,
     {
       name,
@@ -30,5 +30,5 @@ export const renderAttributes = (
 ): string => {
   return attributes
     .map((attr) => renderAttribute(attr.name, attr._default, attr.type))
-    .join('\n,');
+    .join(',');
 };

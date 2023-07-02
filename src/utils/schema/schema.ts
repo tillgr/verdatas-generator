@@ -26,7 +26,6 @@ export const renderSchema = () => {
           ),
           children: Joi.array().items(
             {{children}}
-            })
           ),
         },
         children: Joi.array().items({{children}}),

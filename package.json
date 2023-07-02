@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "src/index.ts",
   "scripts": {
-    "start": "nodemon src/index.ts",
+    "start": "nodemon --ignore ./output src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -27,6 +27,8 @@
     "@stekoe/ocl.js": "^1.4.0",
     "joi": "^17.9.2",
     "mustache": "^4.2.0",
+    "rimraf": "^5.0.1",
+    "ts-morph": "^19.0.0",
     "ts-tree-structure": "^1.0.2"
   }
 }
