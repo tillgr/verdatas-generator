@@ -1,0 +1,14 @@
+{
+  "type": "Topic",
+  "attributes": [
+    {
+      "name": "a1",
+      "value": ""
+    },
+    {
+      "name": "a2",
+      "value": 0
+    }
+  ],
+  "children": [{}]
+}

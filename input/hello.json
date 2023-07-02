@@ -1,0 +1,66 @@
+{
+  "type": "Topic",
+  "attributes": [
+    {
+      "name": "a1",
+      "defaultValue": "",
+      "type": "string"
+    },
+    {
+      "name": "a2",
+      "defaultValue": 0,
+      "type": "number"
+    }
+  ],
+  "children": [
+    {
+      "type": "PreparationModule",
+      "children": [
+        {
+          "type": "PreparationChapter",
+          "attributes": [
+            {
+              "name": "a1",
+              "type": "string"
+            },
+            {
+              "name": "a2",
+              "type": "boolean"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LearningModule",
+      "children": [
+        {
+          "type": "LearningChapter",
+          "attributes": [
+            {
+              "name": "a1",
+              "type": "string"
+            },
+            {
+              "name": "a2",
+              "type": "boolean"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "PracticeModule",
+      "attributes": [
+        {
+          "name": "a1",
+          "type": "string"
+        },
+        {
+          "name": "a2",
+          "type": "boolean"
+        }
+      ]
+    }
+  ]
+}
