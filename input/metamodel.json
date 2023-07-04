@@ -3,12 +3,12 @@
   "attributes": [
     {
       "name": "a1",
-      "defaultValue": "",
+      "_default": "",
       "type": "string"
     },
     {
       "name": "a2",
-      "defaultValue": 0,
+      "_default": 0,
       "type": "number"
     }
   ],
@@ -21,10 +21,12 @@
           "attributes": [
             {
               "name": "a1",
+              "_default": "",
               "type": "string"
             },
             {
               "name": "a2",
+              "_default": false,
               "type": "boolean"
             }
           ]
@@ -39,10 +41,12 @@
           "attributes": [
             {
               "name": "a1",
+              "_default": "",
               "type": "string"
             },
             {
               "name": "a2",
+              "_default": true,
               "type": "boolean"
             }
           ]
@@ -54,10 +58,12 @@
       "attributes": [
         {
           "name": "a1",
+          "_default": "none",
           "type": "string"
         },
         {
           "name": "a2",
+          "_default": false,
           "type": "boolean"
         }
       ]

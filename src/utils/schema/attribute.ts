@@ -1,4 +1,5 @@
 import Mustache from 'mustache';
+import { Attribute } from 'model/attribute';
 
 const renderAttribute = (
   name: string,
@@ -7,11 +8,12 @@ const renderAttribute = (
 ) => {
   return Mustache.render(
     `
-      Joi.object({
-        name: Joi.string().allow('{{name}}').required(),
-        default: Joi.{{type}}().allow('{{_default}}'),
-        type: Joi.{{type}}().required(),
-      })
+    // Attribute: {{name}}, Type: {{type}}
+    Joi.object({
+      name: Joi.string().allow('{{name}}').required(),
+      default: Joi.{{type}}().allow({{_default}}),
+      type: Joi.{{type}}().required(),
+    })
     `,
     {
       name,
@@ -21,13 +23,7 @@ const renderAttribute = (
   );
 };
 
-export const renderAttributes = (
-  attributes: {
-    name: string;
-    _default: string | number | boolean;
-    type: 'string' | 'number' | 'boolean';
-  }[]
-): string => {
+export const renderAttributes = (attributes: Attribute[]): string => {
   return attributes
     .map((attr) => renderAttribute(attr.name, attr._default, attr.type))
     .join(',');

@@ -4,19 +4,9 @@ import { createTree } from 'utils/tree';
 import { renderSchema } from 'utils/schema';
 import { readJson } from 'utils/file';
 import { Project } from 'ts-morph';
+import { MetaNode } from 'model/node';
 
-type CustomNodeBase = {
-  // id: string; // only for instances
-  type: string;
-  attributes?: {
-    name: string;
-    value: string | number | boolean;
-  }[];
-};
-export type CustomNode = CustomNodeBase & {
-  children?: CustomNodeBase[];
-};
-const nodeTypes: Node<CustomNode>[] = [];
+const nodeTypes: Node<MetaNode>[] = [];
 
 Mustache.escape = function (text) {
   return text;
@@ -41,17 +31,23 @@ readJson()
     });
   })
   .then(async () => {
-    const fileContent = renderSchema();
-    const outputFile = project.createSourceFile(
-      'output/output.ts',
-      fileContent,
-      { overwrite: true }
-    );
-    outputFile.formatText({
-      baseIndentSize: 2,
-      indentSize: 2,
-      tabSize: 2,
+    nodeTypes.forEach((node) => {
+      const { type, attributes, children } = node.model;
+      const childNames = children?.map((child) => child.type);
+
+      const fileContent = renderSchema(type, attributes, childNames);
+      const outputFile = project.createSourceFile(
+        `output/${node.model.type}_schema.ts`,
+        fileContent,
+        { overwrite: true }
+      );
+      outputFile.formatText({
+        baseIndentSize: 2,
+        indentSize: 2,
+        tabSize: 2,
+      });
     });
+
     await project.save();
   });
 
