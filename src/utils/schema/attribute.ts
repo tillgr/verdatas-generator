@@ -11,17 +11,14 @@ const renderAttribute = (
     // Attribute: {{name}}, Type: {{type}}
     Joi.object({
       name: Joi.string().allow('{{name}}').required(),
-      value: Joi.{{type}}().allow({{value}}),
+      value: Joi.{{type}}().allow('{{value}}'),
       type: Joi.{{type}}().required(),
     })
     `,
     {
       name,
       type,
-      value: () => {
-        if (value === '') return "''";
-        return value;
-      },
+      value,
     }
   );
 };

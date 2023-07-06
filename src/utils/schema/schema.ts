@@ -18,7 +18,7 @@ export const renderSchema = (
 
   return Mustache.render(
     `
-      const {{type}}_schema: Joi.ObjectSchema<CustomNode> = Joi.object({
+      export const {{type}}_schema: Joi.ObjectSchema<MetaNode> = Joi.object({
         model: {
           type: Joi.string().required(),
           {{#attributes}}
