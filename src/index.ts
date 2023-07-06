@@ -5,6 +5,7 @@ import { renderSchema } from 'utils/schema';
 import { readJson } from 'utils/file';
 import { Project } from 'ts-morph';
 import { MetaNode } from 'model/node';
+import { jsonc } from 'jsonc';
 
 const nodeTypes: Node<MetaNode>[] = [];
 
@@ -29,25 +30,40 @@ readJson()
         nodeTypes.push(node);
       return true;
     });
+
+    console.log(nodeTypes);
   })
-  .then(async () => {
+  .then(() => {
     nodeTypes.forEach((node) => {
+      const parent = node.parent?.model.type;
       const { type, attributes, children } = node.model;
       const childNames = children?.map((child) => child.type);
 
-      const fileContent = renderSchema(type, attributes, childNames);
+      const fileContent = renderSchema(type, parent, attributes, childNames);
       const outputFile = project.createSourceFile(
         `output/${node.model.type}_schema.ts`,
         fileContent,
         { overwrite: true }
       );
       outputFile.formatText({
-        baseIndentSize: 2,
         indentSize: 2,
         tabSize: 2,
       });
     });
-
+  })
+  .then(() => {
+    const fileContent = jsonc.stringify(nodeTypes);
+    const outputFile = project.createSourceFile(
+      `output/nodeTypes.json`,
+      fileContent,
+      { overwrite: true }
+    );
+    outputFile.formatText({
+      indentSize: 2,
+      tabSize: 2,
+    });
+  })
+  .then(async () => {
     await project.save();
   });
 

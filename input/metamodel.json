@@ -3,12 +3,12 @@
   "attributes": [
     {
       "name": "a1",
-      "_default": "",
+      "value": "",
       "type": "string"
     },
     {
       "name": "a2",
-      "_default": 0,
+      "value": 0,
       "type": "number"
     }
   ],
@@ -21,12 +21,12 @@
           "attributes": [
             {
               "name": "a1",
-              "_default": "",
+              "value": "",
               "type": "string"
             },
             {
               "name": "a2",
-              "_default": false,
+              "value": false,
               "type": "boolean"
             }
           ]
@@ -41,12 +41,12 @@
           "attributes": [
             {
               "name": "a1",
-              "_default": "",
+              "value": "",
               "type": "string"
             },
             {
               "name": "a2",
-              "_default": true,
+              "value": true,
               "type": "boolean"
             }
           ]
@@ -58,12 +58,12 @@
       "attributes": [
         {
           "name": "a1",
-          "_default": "none",
+          "value": "none",
           "type": "string"
         },
         {
           "name": "a2",
-          "_default": false,
+          "value": false ,
           "type": "boolean"
         }
       ]
