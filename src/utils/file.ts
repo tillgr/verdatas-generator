@@ -42,7 +42,7 @@ export const saveSchemas = (nodeTypes: Node<MetaNode>[]) => {
 
     const fileContent = renderSchema(type, parent, attributes, childNames);
     const outputFile = project.createSourceFile(
-      `output/${node.model.type}_schema.ts`,
+      `output/${node.model.type}_Schema.ts`,
       fileContent,
       { overwrite: true }
     );
@@ -75,7 +75,7 @@ const stringify = (obj: Node<MetaNode>[]) => {
 export const saveNodeTypes = (nodeTypes: Node<MetaNode>[]) => {
   const fileContent = stringify(nodeTypes);
   const outputFile = project.createSourceFile(
-    `output/nodeTypes.json`,
+    `output/GraphSchema.json`,
     fileContent,
     { overwrite: true }
   );
