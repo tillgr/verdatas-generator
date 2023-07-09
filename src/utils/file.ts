@@ -51,7 +51,7 @@ export const saveValidationSchemas = (nodeTypes: Node<MetaNode>[]) => {
 
     const fileContent = renderSchemas(type, attributes, children);
     const outputFile = project.createSourceFile(
-      `output/${node.model.type}_Schema.ts`,
+      `output/schema/${node.model.type}_Schema.ts`,
       fileContent,
       { overwrite: true }
     );
@@ -81,7 +81,7 @@ const stringify = (obj: Node<MetaNode>[]) => {
 export const saveGraphSchema = (nodeTypes: Node<MetaNode>[]) => {
   const fileContent = stringify(nodeTypes);
   const outputFile = project.createSourceFile(
-    `output/GraphSchema.json`,
+    `output/schema/GraphSchema.json`,
     fileContent,
     { overwrite: true }
   );
@@ -97,9 +97,13 @@ export const saveEnum = (nodeTypes: Node<MetaNode>[]) => {
         value: type.toLowerCase(),
       };
     });
-  const outputFile = project.createSourceFile(`output/NodeType.ts`, undefined, {
-    overwrite: true,
-  });
+  const outputFile = project.createSourceFile(
+    `output/model/NodeType.ts`,
+    undefined,
+    {
+      overwrite: true,
+    }
+  );
   outputFile.addEnum({
     name: 'NodeType',
     members,
@@ -111,7 +115,7 @@ export const saveEnum = (nodeTypes: Node<MetaNode>[]) => {
 export const saveNodeData = (nodeTypes: Node<MetaNode>[]) => {
   const fileContent = renderNodeData(nodeTypes);
   const outputFile = project.createSourceFile(
-    `output/NodeData.ts`,
+    `output/model/NodeData.ts`,
     fileContent,
     {
       overwrite: true,
