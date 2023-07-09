@@ -5,6 +5,7 @@ import { MetaNode } from 'model/MetaNode';
 import { renderSchemas } from 'utils/schema';
 import { Project } from 'ts-morph';
 import { Child } from 'model/Child';
+import { renderNodeData } from 'utils/model';
 
 const dir = './input';
 export const readJson = () => {
@@ -104,6 +105,18 @@ export const saveEnum = (nodeTypes: Node<MetaNode>[]) => {
     members,
     isExported: true,
   });
+  outputFile.formatText(formatOptions);
+};
+
+export const saveNodeData = (nodeTypes: Node<MetaNode>[]) => {
+  const fileContent = renderNodeData(nodeTypes);
+  const outputFile = project.createSourceFile(
+    `output/NodeData.ts`,
+    fileContent,
+    {
+      overwrite: true,
+    }
+  );
   outputFile.formatText(formatOptions);
 };
 

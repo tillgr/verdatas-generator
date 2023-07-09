@@ -5,6 +5,7 @@ import {
   readJson,
   saveEnum,
   saveGraphSchema,
+  saveNodeData,
   saveProject,
   saveValidationSchemas,
 } from 'utils/file';
@@ -28,6 +29,7 @@ root.walk((node) => {
 saveValidationSchemas(nodeTypes);
 saveGraphSchema(nodeTypes);
 saveEnum(nodeTypes);
+saveNodeData(nodeTypes);
 saveProject();
 
 // general:
