@@ -1,9 +1,10 @@
 import fs from 'fs';
 import path from 'path';
 import { Node } from 'ts-tree-structure';
-import { MetaNode } from 'model/node';
-import { renderSchema } from 'utils/schema';
+import { MetaNode } from 'model/MetaNode';
+import { renderSchemas } from 'utils/schema';
 import { Project } from 'ts-morph';
+import { Child } from 'model/Child';
 
 const dir = './input';
 export const readJson = () => {
@@ -34,22 +35,26 @@ const project = new Project({
   // Read more: https://ts-morph.com/setup/
 });
 
-export const saveSchemas = (nodeTypes: Node<MetaNode>[]) => {
-  nodeTypes.forEach((node) => {
-    const parent = node.parent?.model.type;
-    const { type, attributes, children } = node.model;
-    const childNames = children?.map((child) => child.type);
+const formatOptions = {
+  indentSize: 2,
+  tabSize: 2,
+};
 
-    const fileContent = renderSchema(type, parent, attributes, childNames);
+export const saveValidationSchemas = (nodeTypes: Node<MetaNode>[]) => {
+  nodeTypes.forEach((node) => {
+    const { type, attributes, children: modelChildren } = node.model;
+    const children = modelChildren?.map((child) => {
+      const { type, count } = child;
+      return { type, count } as Child;
+    });
+
+    const fileContent = renderSchemas(type, attributes, children);
     const outputFile = project.createSourceFile(
       `output/${node.model.type}_Schema.ts`,
       fileContent,
       { overwrite: true }
     );
-    outputFile.formatText({
-      indentSize: 2,
-      tabSize: 2,
-    });
+    outputFile.formatText(formatOptions);
   });
 };
 
@@ -72,17 +77,34 @@ const stringify = (obj: Node<MetaNode>[]) => {
   });
 };
 
-export const saveNodeTypes = (nodeTypes: Node<MetaNode>[]) => {
+export const saveGraphSchema = (nodeTypes: Node<MetaNode>[]) => {
   const fileContent = stringify(nodeTypes);
   const outputFile = project.createSourceFile(
     `output/GraphSchema.json`,
     fileContent,
     { overwrite: true }
   );
-  outputFile.formatText({
-    indentSize: 2,
-    tabSize: 2,
+  outputFile.formatText(formatOptions);
+};
+
+export const saveEnum = (nodeTypes: Node<MetaNode>[]) => {
+  const members = nodeTypes
+    .map((node) => node.model.type)
+    .map((type) => {
+      return {
+        name: type,
+        value: type.toLowerCase(),
+      };
+    });
+  const outputFile = project.createSourceFile(`output/NodeType.ts`, undefined, {
+    overwrite: true,
   });
+  outputFile.addEnum({
+    name: 'NodeType',
+    members,
+    isExported: true,
+  });
+  outputFile.formatText(formatOptions);
 };
 
 export const saveProject = async () => {

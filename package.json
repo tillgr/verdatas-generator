@@ -4,6 +4,7 @@
   "main": "src/index.ts",
   "scripts": {
     "start": "nodemon --ignore ./output src/index.ts",
+    "validate": "ts-node ./validate.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

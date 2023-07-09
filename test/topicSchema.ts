@@ -4,7 +4,7 @@ import * as Joi from 'joi';
 const topicSchema: Joi.ObjectSchema<CustomNode> = Joi.object({
   model: {
     type: Joi.string().required(),
-    attributes: Joi.array().items(
+    attributesSchema: Joi.array().items(
       Joi.object({
         name: Joi.string().required(),
         default: Joi.string().allow(''),
@@ -23,7 +23,7 @@ const topicSchema: Joi.ObjectSchema<CustomNode> = Joi.object({
           'LearningModule',
           'PracticeModule'
         ),
-        attributes: Joi.array().items(Joi.any()),
+        attributesSchema: Joi.array().items(Joi.any()),
         children: Joi.array().items(Joi.any()),
       })
     ),

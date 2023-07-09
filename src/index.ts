@@ -1,8 +1,14 @@
 import { Node } from 'ts-tree-structure';
 import Mustache from 'mustache';
 import { createTree } from 'utils/tree';
-import { readJson, saveNodeTypes, saveProject, saveSchemas } from 'utils/file';
-import { MetaNode } from 'model/node';
+import {
+  readJson,
+  saveEnum,
+  saveGraphSchema,
+  saveProject,
+  saveValidationSchemas,
+} from 'utils/file';
+import { MetaNode } from 'model/MetaNode';
 
 Mustache.escape = function (text) {
   return text;
@@ -19,8 +25,9 @@ root.walk((node) => {
 
 // console.log(nodeTypes);
 
-saveSchemas(nodeTypes);
-saveNodeTypes(nodeTypes);
+saveValidationSchemas(nodeTypes);
+saveGraphSchema(nodeTypes);
+saveEnum(nodeTypes);
 saveProject();
 
 // general:

@@ -1,8 +1,11 @@
-import { Attribute } from 'model/attribute';
+import { Attribute } from 'model/Attribute';
 
 export type MetaNode = {
-  // id: string; // only for instances
   type: string;
+  count: {
+    min: number;
+    max: number;
+  };
   parent: MetaNode;
   attributes?: Attribute[];
   children?: MetaNode[];
