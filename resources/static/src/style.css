@@ -1,0 +1,180 @@
+/* these are necessary styles for vue flow */
+@import '@vue-flow/core/dist/style.css';
+
+/* this contains the default theme, these are optional styles */
+@import '@vue-flow/core/dist/theme-default.css';
+
+@import '@vue-flow/controls/dist/style.css';
+@import '@vue-flow/minimap/dist/style.css';
+
+
+html,
+body,
+#app {
+  margin: 0;
+  height: 100%;
+}
+
+.history-controls {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  z-index: 4;
+  display: flex;
+  gap: 0.25rem;
+}
+
+button {
+  display: flex;
+  align-items: center;
+  border: 1px solid #000000;
+  border-radius: 0.1rem;
+  height: 1.5rem;
+}
+
+input[type=text] {
+  height: 1.25rem !important;
+}
+
+button svg {
+  margin-right: 0.1rem;
+}
+
+label {
+  margin-bottom: 0.25rem;
+}
+
+h2 {
+  font-size: 1rem;
+  margin: 0 0 0.75rem 0;
+}
+
+#app {
+  text-transform: uppercase;
+  font-family: 'JetBrains Mono', monospace;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
+
+.vue-flow__minimap {
+  transform: scale(75%);
+  transform-origin: bottom right;
+}
+
+.vue-flow__node {
+  width: 150px;
+  border-radius: 5px;
+  padding: 10px;
+  color: #444444;
+  text-align: center;
+  font-size: 12px;
+  background-color: white;
+}
+
+.vue-flow__node-module {
+  border: deepskyblue 1px solid;
+}
+
+.vue-flow__node-module .vue-flow__handle {
+  background: deepskyblue;
+}
+
+.vue-flow__node-topic {
+  border: orange 1px solid;
+}
+
+.vue-flow__node-topic .vue-flow__handle {
+  background: orange;
+}
+
+.vue-flow__node-chapter {
+  border: deeppink 1px solid;
+}
+
+.vue-flow__node-chapter .vue-flow__handle {
+  background: deeppink;
+}
+
+.vue-flow__node-interactivetask {
+  border: limegreen 1px solid;
+}
+
+.vue-flow__node-interactivetask .vue-flow__handle {
+  background: limegreen;
+}
+
+.validationflow .vue-flow__node-customnode {
+  background: white;
+  border: 1px solid #ddd
+}
+
+.validationflow .vue-flow__node-custominput .vue-flow__handle {
+  background: #e6e6e9
+}
+
+.validationflow .vue-flow__node-custominput {
+  background: white;
+}
+
+.validationflow .vue-flow__handle-connecting {
+  background: #ff6060
+}
+
+.validationflow .vue-flow__handle-valid {
+  background: #55dd99
+}
+
+
+.dndflow {
+  flex-direction: column;
+  display: flex;
+  height: 100%;
+}
+
+.dndflow aside {
+  border-right: 1px solid #eee;
+  padding: 15px 10px;
+  font-size: 12px;
+  background: rgba(239, 239, 239, 0.75)
+}
+
+.dndflow aside > * {
+  margin-bottom: 10px;
+  cursor: grab;
+}
+
+.dndflow aside .description {
+  margin-bottom: 10px;
+}
+
+.dndflow .vue-flow-wrapper {
+  flex-grow: 1;
+  height: 100%;
+}
+
+.dndflow .delete-button {
+  background-color: #ff6060;
+}
+
+.dndflow .locker {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 10px;
+}
+
+@media screen and (min-width: 768px) {
+  .dndflow {
+    flex-direction: row;
+  }
+
+  .dndflow aside {
+    width: 20%;
+    max-width: 180px;
+  }
+}

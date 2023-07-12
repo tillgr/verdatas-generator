@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "src/index.ts",
   "scripts": {
-    "start": "nodemon --ignore ./output src/index.ts",
+    "start:watch": "nodemon --ignore ./output src/index.ts data/static",
+    "start": "ts-node src/index.ts",
     "validate": "ts-node ./validate.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

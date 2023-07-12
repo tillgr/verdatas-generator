@@ -7,15 +7,16 @@ import { Project } from 'ts-morph';
 import { Child } from 'model/Child';
 import { renderNodeData } from 'utils/model';
 
-const dir = './input';
+const INPUT_DIR = './input';
+const OUTPUT_DIR = './output';
 export const readJson = () => {
   try {
-    const files = fs.readdirSync(dir);
+    const files = fs.readdirSync(INPUT_DIR);
     const file = files[0];
 
     let ext = path.extname(file).slice(1);
 
-    let filePath = path.join(dir, file);
+    let filePath = path.join(INPUT_DIR, file);
     try {
       if (ext !== 'json') throw new Error('File is not of type json');
 
@@ -51,7 +52,7 @@ export const saveValidationSchemas = (nodeTypes: Node<MetaNode>[]) => {
 
     const fileContent = renderSchemas(type, attributes, children);
     const outputFile = project.createSourceFile(
-      `output/schema/${node.model.type}_Schema.ts`,
+      `${OUTPUT_DIR}/schema/${node.model.type}_Schema.ts`,
       fileContent,
       { overwrite: true }
     );
@@ -81,7 +82,7 @@ const stringify = (obj: Node<MetaNode>[]) => {
 export const saveGraphSchema = (nodeTypes: Node<MetaNode>[]) => {
   const fileContent = stringify(nodeTypes);
   const outputFile = project.createSourceFile(
-    `output/schema/GraphSchema.json`,
+    `${OUTPUT_DIR}/schema/GraphSchema.json`,
     fileContent,
     { overwrite: true }
   );
@@ -98,7 +99,7 @@ export const saveEnum = (nodeTypes: Node<MetaNode>[]) => {
       };
     });
   const outputFile = project.createSourceFile(
-    `output/model/NodeType.ts`,
+    `${OUTPUT_DIR}/model/NodeType.ts`,
     undefined,
     {
       overwrite: true,
@@ -115,7 +116,7 @@ export const saveEnum = (nodeTypes: Node<MetaNode>[]) => {
 export const saveNodeData = (nodeTypes: Node<MetaNode>[]) => {
   const fileContent = renderNodeData(nodeTypes);
   const outputFile = project.createSourceFile(
-    `output/model/NodeData.ts`,
+    `${OUTPUT_DIR}/model/NodeData.ts`,
     fileContent,
     {
       overwrite: true,
