@@ -12,6 +12,8 @@ import {
 import { MetaNode } from 'model/MetaNode';
 import fs from 'fs/promises';
 
+const PROJECT_NAME = 'verdatas-graph';
+
 const generateEditorData = async () => {
   Mustache.escape = function (text) {
     return text;
@@ -36,16 +38,20 @@ const generateEditorData = async () => {
 const paths = {
   static: {
     source: 'resources/static',
-    destination: 'output',
+    destination: `output/${PROJECT_NAME}`,
   },
   dynamic: {
     source: 'resources/dynamic',
-    destination: '',
+    destination: `output/${PROJECT_NAME}/src/assets/generated`,
   },
 };
+type Paths = {
+  source: string;
+  destination: string;
+};
 
-const insertStaticData = async () => {
-  const { source, destination } = paths.static;
+const copyDataByPath = async (paths: Paths) => {
+  const { source, destination } = paths;
   try {
     await fs.cp(source, destination, { recursive: true });
   } catch (e) {
@@ -53,11 +59,9 @@ const insertStaticData = async () => {
   }
 };
 
-const insertDynamicData = async () => {};
-
 generateEditorData()
-  .then(() => insertStaticData())
-  .then(() => insertDynamicData());
+  .then(() => copyDataByPath(paths.static))
+  .then(() => copyDataByPath(paths.dynamic));
 
 // general:
 // - single parent -> wird im editor implementiert (ts-tree structure)

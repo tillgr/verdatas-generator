@@ -5,6 +5,9 @@
   "scripts": {
     "start:watch": "nodemon --ignore ./output src/index.ts data/static",
     "start": "ts-node src/index.ts",
+    "sub:install": "npm i --prefix output/verdatas-graph",
+    "sub:start": "npm run dev --prefix output/verdatas-graph",
+    "start:complete": "npm run start && npm run sub:install && npm run sub:start",
     "validate": "ts-node ./validate.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

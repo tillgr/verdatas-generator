@@ -7,8 +7,8 @@ import { Project } from 'ts-morph';
 import { Child } from 'model/Child';
 import { renderNodeData } from 'utils/model';
 
-const INPUT_DIR = './input';
-const OUTPUT_DIR = './output';
+const INPUT_DIR = 'input';
+const OUTPUT_DIR = 'resources/dynamic';
 export const readJson = () => {
   try {
     const files = fs.readdirSync(INPUT_DIR);
