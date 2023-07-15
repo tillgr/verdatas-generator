@@ -1,12 +1,12 @@
 import { Connection, GraphEdge, GraphNode, Node } from '@vue-flow/core';
 import { Ref } from 'vue';
-import { NodeData } from 'assets/generated/model/NodeData';
-import { GraphSchema } from 'assets/generated/schema';
+import { NodeData } from 'assets/model/NodeData';
+import { GraphSchema } from 'assets/schema';
 
-import { NodeType } from 'assets/generated/model/NodeType';
+import { NodeType } from 'assets/model/NodeType';
 
 const getTypeInformation = (type: NodeType) => {
-  const result = GraphSchema.filter((nodeType) => nodeType.model.type === type)[0];
+  const result = GraphSchema.filter((nodeType) => nodeType.model.type.toLowerCase() === type)[0];
 
   if (!result) throw new Error('No type information found for provided node ' + type);
   return result;

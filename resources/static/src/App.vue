@@ -21,7 +21,7 @@ import useStore from 'store';
 import { isEqualDeep } from 'utils/history';
 import { createNode } from 'utils/graph';
 
-import { NodeType } from 'assets/generated/model/NodeType';
+import { NodeType } from 'assets/model/NodeType';
 
 const defaultHistoryLocation = -1;
 const defaultOptions = {

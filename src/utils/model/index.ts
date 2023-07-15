@@ -102,7 +102,9 @@ const renderRecord = (nodeTypes: Node<MetaNode>[]) => {
 
   return Mustache.render(
     `
-    export const NodeData: Record<string, {{recordTypes}}> = {
+    export type NodeData = {{recordTypes}}
+
+    export const NodeData: Record<string, NodeData> = {
       {{recordEntries}}
     };
     `,

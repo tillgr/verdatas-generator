@@ -42,7 +42,7 @@ const paths = {
   },
   dynamic: {
     source: 'resources/dynamic',
-    destination: `output/${PROJECT_NAME}/src/assets/generated`,
+    destination: `output/${PROJECT_NAME}/src/assets`,
   },
 };
 type Paths = {

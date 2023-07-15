@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useVueFlow } from '@vue-flow/core';
-import { NodeType } from 'models';
+import { NodeType } from 'assets/model/NodeType';
 
 const { toObject /*, nodes, edges, removeNodes, addNodes, addEdges*/ } = useVueFlow();
 

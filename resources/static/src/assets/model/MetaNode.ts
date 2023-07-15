@@ -1,5 +1,5 @@
-import { Attribute } from 'assets/generated/model/Attribute';
-import { NodeType } from 'assets/generated/model/NodeType';
+import { Attribute } from 'assets/model/Attribute';
+import { NodeType } from 'assets/model/NodeType';
 
 export type MetaNode = {
   model: {
