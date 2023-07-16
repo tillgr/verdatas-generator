@@ -11,17 +11,16 @@ import {
 import { Background } from '@vue-flow/background';
 import { Controls } from '@vue-flow/controls';
 import { MiniMap } from '@vue-flow/minimap';
-import Module from 'components/Module.vue';
-import Chapter from 'components/Chapter.vue';
-import Topic from 'components/Topic.vue';
-import InteractiveTask from 'components/InteractiveTask.vue';
 import Sidebar from 'components/Sidebar.vue';
-import { computed, ref, watch } from 'vue';
+import { computed, markRaw, ref, watch } from 'vue';
 import useStore from 'store';
 import { isEqualDeep } from 'utils/history';
 import { createNode } from 'utils/graph';
 
 import { NodeType } from 'assets/model/NodeType';
+import CustomNode from 'components/CustomNode.vue';
+
+const nodeTypes = Object.fromEntries(Object.values(NodeType).map((val) => [val, markRaw(CustomNode)]));
 
 const defaultHistoryLocation = -1;
 const defaultOptions = {
@@ -172,6 +171,7 @@ const onEdgeUpdate = ({ edge, connection }: FlowEvents['edgeUpdate']) => {
     <Sidebar />
     <VueFlow
       v-model="store.elements"
+      :node-types="nodeTypes"
       auto-connect
       :edges-updatable="true"
       :snap-to-grid="true"
@@ -232,18 +232,6 @@ const onEdgeUpdate = ({ edge, connection }: FlowEvents['edgeUpdate']) => {
           </div>
         </div>
       </div>
-      <template #node-module="props">
-        <Module v-bind="props" />
-      </template>
-      <template #node-chapter="props">
-        <Chapter v-bind="props" />
-      </template>
-      <template #node-topic="props">
-        <Topic v-bind="props" />
-      </template>
-      <template #node-interactivetask="props">
-        <InteractiveTask v-bind="props" />
-      </template>
     </VueFlow>
   </div>
 </template>

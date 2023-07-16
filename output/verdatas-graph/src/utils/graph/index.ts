@@ -1,9 +1,7 @@
 import { Connection, GraphEdge, GraphNode, Node } from '@vue-flow/core';
 import { Ref } from 'vue';
-import { NodeData } from 'assets/model/NodeData';
 import { GraphSchema } from 'assets/schema';
-
-import { NodeType } from 'assets/model/NodeType';
+import { NodeData, NodeType } from 'assets/model';
 
 const getTypeInformation = (type: NodeType) => {
   const result = GraphSchema.filter((nodeType) => nodeType.model.type.toLowerCase() === type)[0];
@@ -21,13 +19,14 @@ export const getNodeById = (id: string, nodes: Ref<GraphNode<any, any>[]>): Node
 export const edgeContainsNode = (edge: GraphEdge, node: Node) => {
   return edge.id.includes(node.id);
 };
-export const edgeContainsNodeType = (edge: GraphEdge, type: string) => {
+export const edgeContainsNodeType = (edge: GraphEdge, type?: string) => {
+  if (!type) return false;
   return edge.sourceNode.type === type || edge.targetNode.type === type;
 };
 
 const matchNodeTypes = (id: string, nodes: Ref<GraphNode<any, any>[]>, types?: (NodeType | undefined)[]): boolean => {
   const node = getNodeById(id, nodes);
-  return types?.some((type) => type === node?.type) || false;
+  return types?.some((type) => type?.toLowerCase() === node?.type?.toLowerCase()) || false;
 };
 
 const checkForMultipleParents = (
@@ -46,7 +45,8 @@ const checkForMultipleParents = (
 
   const child = targetType === sourceParentType ? source : target;
   return !edges.value.some(
-    (edge) => edgeContainsNode(edge, child) && edgeContainsNodeType(edge, child.data.metaParentType)
+    (edge) =>
+      edgeContainsNode(edge, child) && edgeContainsNodeType(edge, getTypeInformation(child.type as NodeType).parent)
   );
 };
 

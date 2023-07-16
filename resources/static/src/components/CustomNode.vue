@@ -3,7 +3,7 @@ import { Connection, Handle, Position } from '@vue-flow/core';
 import { NodeData, NodeType } from 'assets/model';
 import { GraphSchema } from 'assets/schema';
 
-export interface ModuleProps {
+export interface CustomNodeProps {
   isValidTargetPos: (connection: Connection) => boolean;
   isValidSourcePos: (connection: Connection) => boolean;
   id: string;
@@ -12,10 +12,10 @@ export interface ModuleProps {
   data: NodeData;
 }
 
-const props = defineProps<ModuleProps>();
+const props = defineProps<CustomNodeProps>();
 
 const getMetaNodeByType = (type: NodeType) => {
-  return GraphSchema.filter((nodeType) => nodeType.model.type === type)[0];
+  return GraphSchema.filter((nodeType) => nodeType.model.type.toLowerCase() === type.toLowerCase())[0];
 };
 
 const isRoot = getMetaNodeByType(props.type)?.parent === undefined;
@@ -24,7 +24,6 @@ const isLeaf = getMetaNodeByType(props.type)?.children === undefined;
 
 <script lang="ts">
 export default {
-  name: props.type,
   inheritAttrs: false,
 };
 </script>
