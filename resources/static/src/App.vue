@@ -19,8 +19,10 @@ import { createNode } from 'utils/graph';
 
 import { NodeType } from 'assets/model/NodeType';
 import CustomNode from 'components/CustomNode.vue';
+import { GraphSchema } from 'assets/schema';
 
 const nodeTypes = Object.fromEntries(Object.values(NodeType).map((val) => [val, markRaw(CustomNode)]));
+const rootType = GraphSchema.filter((nodeType) => !nodeType.parent)[0]!.model.type.toLowerCase();
 
 const defaultHistoryLocation = -1;
 const defaultOptions = {
@@ -63,7 +65,7 @@ const historyUsed = ref(false);
 
 const hasTopic = computed(() => {
   return nodes.value.some((node) => {
-    return node?.type === NodeType.Topic;
+    return node?.type.toLowerCase() === rootType;
   });
 });
 const optionKeys = computed(() => Object.keys(options.value.data) ?? []);
@@ -121,8 +123,8 @@ const onDragOver = (event: DragEvent) => {
   }
 };
 const onDrop = (event: DragEvent) => {
-  const type = event.dataTransfer?.getData('application/vueflow/type') as NodeType;
-  if (type === NodeType.Topic && hasTopic.value) return; //no second topic globally
+  const type = event.dataTransfer?.getData('application/vueflow/type').toLowerCase() as NodeType;
+  if (type === rootType && hasTopic.value) return; //no second topic globally
 
   const flowbounds = wrapper.value.$el.getBoundingClientRect();
   const position = project({
