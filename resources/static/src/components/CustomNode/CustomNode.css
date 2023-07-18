@@ -1,0 +1,31 @@
+.vue-flow__node-module {
+  border: deepskyblue 1px solid;
+}
+
+.vue-flow__node-module .vue-flow__handle {
+  background: deepskyblue;
+}
+
+.vue-flow__node-topic {
+  border: orange 1px solid;
+}
+
+.vue-flow__node-topic .vue-flow__handle {
+  background: orange;
+}
+
+.vue-flow__node-chapter {
+  border: deeppink 1px solid;
+}
+
+.vue-flow__node-chapter .vue-flow__handle {
+  background: deeppink;
+}
+
+.vue-flow__node-interactivetask {
+  border: limegreen 1px solid;
+}
+
+.vue-flow__node-interactivetask .vue-flow__handle {
+  background: limegreen;
+}

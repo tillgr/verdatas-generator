@@ -1,7 +1,0 @@
-{
-  "extends": "data/static/tsconfig.json",
-  "compilerOptions": {
-    "sourceMap": false,
-    "declaration": true
-  }
-}

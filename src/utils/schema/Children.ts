@@ -22,7 +22,7 @@ const renderCustomLogic = (children: Child[]) => {
   const assertions = children
     .map((child) => {
       return Mustache.render(
-        `.assert('.{{type}}', Joi.number().min({{count.min}}).max({{count.max}}))`,
+        `.assert('.{{type}}', Joi.number(){{#count.min}}.min({{count.min}}){{/count.min}}{{#count.max}}.max({{count.max}}){{/count.max}})`,
         child
       );
     })

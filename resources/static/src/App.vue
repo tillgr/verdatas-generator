@@ -18,7 +18,7 @@ import { isEqualDeep } from 'utils/history';
 import { createNode } from 'utils/graph';
 
 import { NodeType } from 'assets/model/NodeType';
-import CustomNode from 'components/CustomNode.vue';
+import CustomNode from 'components/CustomNode/CustomNode.vue';
 import { GraphSchema } from 'assets/schema';
 
 const nodeTypes = Object.fromEntries(Object.values(NodeType).map((val) => [val, markRaw(CustomNode)]));
@@ -142,8 +142,7 @@ const onNodeClick = (event: NodeMouseEvent) => {
   if (!event.node) return;
   currentNodeId.value = event.node.id;
 
-  const { metaParentType, metaChildType, ...rest } = event.node.data;
-  options.value = { label: event.node.label as string, data: { ...rest } };
+  options.value = { label: event.node.label as string, data: event.node.data };
 };
 const updateNode = () => {
   const node = findNode(currentNodeId.value);
