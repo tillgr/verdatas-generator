@@ -7,6 +7,7 @@ import {
   saveGraphSchema,
   saveNodeData,
   saveProject,
+  saveStyles,
   saveValidationSchemas,
 } from 'utils/file';
 import { MetaNode } from 'model/MetaNode';
@@ -28,23 +29,34 @@ const generateEditorData = async () => {
     return true;
   });
 
+  // assets
   saveValidationSchemas(nodeTypes);
   saveGraphSchema(nodeTypes);
   saveEnum(nodeTypes);
   saveNodeData(nodeTypes);
+  // style
+  saveStyles(nodeTypes);
+
   await saveProject();
 };
 
 const paths = {
   static: {
-    source: 'resources/static',
-    destination: `output/${PROJECT_NAME}`,
+    source: 'static',
+    destination: `${PROJECT_NAME}`,
   },
   dynamic: {
-    source: 'resources/dynamic',
-    destination: `output/${PROJECT_NAME}/src/assets`,
+    assets: {
+      source: 'dynamic/assets',
+      destination: `${PROJECT_NAME}/src/assets`,
+    },
+    style: {
+      source: 'dynamic/style',
+      destination: `${PROJECT_NAME}/src`,
+    },
   },
 };
+
 type Paths = {
   source: string;
   destination: string;
@@ -53,7 +65,9 @@ type Paths = {
 const copyDataByPath = async (paths: Paths) => {
   const { source, destination } = paths;
   try {
-    await fs.cp(source, destination, { recursive: true });
+    await fs.cp(`resources/${source}`, `output/${destination}`, {
+      recursive: true,
+    });
   } catch (e) {
     console.log(e);
   }
@@ -61,7 +75,5 @@ const copyDataByPath = async (paths: Paths) => {
 
 generateEditorData()
   .then(() => copyDataByPath(paths.static))
-  .then(() => copyDataByPath(paths.dynamic));
-
-// general:
-// - single parent -> wird im editor implementiert (ts-tree structure)
+  .then(() => copyDataByPath(paths.dynamic.assets))
+  .then(() => copyDataByPath(paths.dynamic.style));

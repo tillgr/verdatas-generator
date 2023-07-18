@@ -6,6 +6,7 @@ import { renderSchemas } from 'utils/schema';
 import { Project } from 'ts-morph';
 import { Child } from 'model/Child';
 import { renderNodeData } from 'utils/model';
+import { renderStyleData } from 'utils/style';
 
 const INPUT_DIR = 'input';
 const OUTPUT_DIR = 'resources/dynamic';
@@ -52,7 +53,7 @@ export const saveValidationSchemas = (nodeTypes: Node<MetaNode>[]) => {
 
     const fileContent = renderSchemas(type, attributes, children);
     const outputFile = project.createSourceFile(
-      `${OUTPUT_DIR}/schema/${node.model.type}_Schema.ts`,
+      `${OUTPUT_DIR}/assets/schema/${node.model.type}_Schema.ts`,
       fileContent,
       { overwrite: true }
     );
@@ -82,7 +83,7 @@ const stringify = (obj: Node<MetaNode>[]) => {
 export const saveGraphSchema = (nodeTypes: Node<MetaNode>[]) => {
   const fileContent = stringify(nodeTypes);
   const outputFile = project.createSourceFile(
-    `${OUTPUT_DIR}/schema/GraphSchema.json`,
+    `${OUTPUT_DIR}/assets/schema/GraphSchema.json`,
     fileContent,
     { overwrite: true }
   );
@@ -99,7 +100,7 @@ export const saveEnum = (nodeTypes: Node<MetaNode>[]) => {
       };
     });
   const outputFile = project.createSourceFile(
-    `${OUTPUT_DIR}/model/NodeType.ts`,
+    `${OUTPUT_DIR}/assets/model/NodeType.ts`,
     undefined,
     {
       overwrite: true,
@@ -116,13 +117,20 @@ export const saveEnum = (nodeTypes: Node<MetaNode>[]) => {
 export const saveNodeData = (nodeTypes: Node<MetaNode>[]) => {
   const fileContent = renderNodeData(nodeTypes);
   const outputFile = project.createSourceFile(
-    `${OUTPUT_DIR}/model/NodeData.ts`,
+    `${OUTPUT_DIR}/assets/model/NodeData.ts`,
     fileContent,
     {
       overwrite: true,
     }
   );
   outputFile.formatText(formatOptions);
+};
+
+export const saveStyles = (nodeTypes: Node<MetaNode>[]) => {
+  const fileContent = renderStyleData(nodeTypes);
+  project.createSourceFile(`${OUTPUT_DIR}/style/Nodes.css`, fileContent, {
+    overwrite: true,
+  });
 };
 
 export const saveProject = async () => {

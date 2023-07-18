@@ -106,7 +106,7 @@ const renderRecord = (nodeTypes: Node<MetaNode>[]) => {
 
     export const NodeData: Record<string, NodeData> = {
       {{recordEntries}}
-    };
+    }
     `,
     {
       recordTypes,

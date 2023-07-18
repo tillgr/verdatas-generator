@@ -35,6 +35,4 @@ export default {
   <div>Type: {{ props.type }}</div>
 </template>
 
-<style scoped>
-@import 'CustomNode.css';
-</style>
+<style scoped></style>

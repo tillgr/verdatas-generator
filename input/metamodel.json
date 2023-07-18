@@ -1,5 +1,6 @@
 {
   "type": "Topic",
+  "color": "deepskyblue",
   "attributes": [
     {
       "name": "a1",
@@ -15,9 +16,11 @@
   "children": [
     {
       "type": "PreparationModule",
+      "color": "orange",
       "children": [
         {
           "type": "PreparationChapter",
+          "color": "yellow",
           "count": {
             "max": 1
           },
@@ -38,6 +41,7 @@
     },
     {
       "type": "LearningModule",
+      "color": "deeppink",
       "count": {
         "min": 0,
         "max": 1
@@ -45,6 +49,7 @@
       "children": [
         {
           "type": "LearningChapter",
+          "color": "darkblue",
           "count": {
             "min": 0,
             "max": 1
@@ -66,6 +71,7 @@
     },
     {
       "type": "PracticeModule",
+      "color": "limegreen",
       "count": {
         "min": 1,
         "max": 1

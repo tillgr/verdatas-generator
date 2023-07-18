@@ -18,7 +18,7 @@ import { isEqualDeep } from 'utils/history';
 import { createNode } from 'utils/graph';
 
 import { NodeType } from 'assets/model/NodeType';
-import CustomNode from 'components/CustomNode/CustomNode.vue';
+import CustomNode from 'components/CustomNode.vue';
 import { GraphSchema } from 'assets/schema';
 
 const nodeTypes = Object.fromEntries(Object.values(NodeType).map((val) => [val, markRaw(CustomNode)]));
@@ -239,4 +239,5 @@ const onEdgeUpdate = ({ edge, connection }: FlowEvents['edgeUpdate']) => {
 
 <style>
 @import 'updatenode.css';
+@import 'Nodes.css';
 </style>
