@@ -3,6 +3,7 @@ import {
   Connection,
   ConnectionMode,
   FlowEvents,
+  Node,
   NodeMouseEvent,
   useVueFlow,
   VueFlow,
@@ -19,10 +20,12 @@ import { createNode } from 'utils/graph';
 
 import { NodeType } from 'assets/model/NodeType';
 import CustomNode from 'components/CustomNode.vue';
-import { GraphSchema } from 'assets/schema';
+import { GraphSchema, schemas } from 'assets/schema';
+import Joi from 'joi';
+import { MetaNode } from 'assets/model';
 
 const nodeTypes = Object.fromEntries(Object.values(NodeType).map((val) => [val, markRaw(CustomNode)]));
-const rootType = GraphSchema.filter((nodeType) => !nodeType.parent)[0]!.model.type.toLowerCase();
+const rootType = GraphSchema.filter((nodeType: MetaNode) => !nodeType.parent)[0]!.model.type.toLowerCase();
 
 const defaultHistoryLocation = -1;
 const defaultOptions = {
@@ -39,7 +42,7 @@ const { addEdges, addNodes, project, nodes, edges, findNode, updateEdge, removeN
 const wrapper = ref();
 
 const newNodeId = computed(() => {
-  const ids = nodes.value.map((node) => {
+  const ids = nodes.value.map((node: Node) => {
     if (typeof +node.id !== 'number') return 0;
     return +node.id;
   });
@@ -54,6 +57,7 @@ const resetOptions = () => {
   options.value = defaultOptions;
 };
 const isEditingMaskLocked = ref(false);
+const errors = ref({});
 
 const store = useStore();
 const historyLocation = ref(defaultHistoryLocation);
@@ -64,11 +68,11 @@ const observedKeys = ['data', 'id', 'type', 'sourceNode', 'targetNode'];
 const historyUsed = ref(false);
 
 const hasTopic = computed(() => {
-  return nodes.value.some((node) => {
+  return nodes.value.some((node: Node) => {
     return node?.type.toLowerCase() === rootType;
   });
 });
-const optionKeys = computed(() => Object.keys(options.value.data) ?? []);
+const optionKeys = computed(() => (options.value?.data && Object.keys(options.value?.data)) ?? []);
 
 // https://stackoverflow.com/questions/73612018/how-to-create-history-data-in-pinia
 watch(
@@ -148,6 +152,16 @@ const updateNode = () => {
   const node = findNode(currentNodeId.value);
   if (!node) return;
 
+  let validationErrors: { [key: string]: string } = {};
+
+  schemas.attributes[node.type.toLowerCase() as NodeType]
+    .validate(options.value.data)
+    .error?.details.forEach((error: Joi.ErrorReport) => {
+      validationErrors[error.path[0] as string] = error.message;
+    });
+
+  errors.value = validationErrors;
+
   node.label = options.value.label;
   node.data = { ...node.data, ...options.value.data };
 };
@@ -218,15 +232,14 @@ const onEdgeUpdate = ({ edge, connection }: FlowEvents['edgeUpdate']) => {
           </div>
           <div class="mask-item" v-for="key of optionKeys" :key="key">
             <label>{{ key }}:</label>
-            <select
-              v-if="typeof options.data[key] == 'boolean' || key.toLowerCase() === 'concludemodule'"
-              v-model="options.data[key]"
-              @change="updateNode"
-            >
+            <select v-if="typeof options.data[key] == 'boolean'" v-model="options.data[key]" @change="updateNode">
               <option :value="true">true</option>
               <option :value="false">false</option>
             </select>
-            <input type="text" v-else v-model="options.data[key]" @input="updateNode" />
+            <div v-else class="input-wrapper">
+              <input type="text" v-model="options.data[key]" @input="updateNode" />
+              <div :class="{ invalid: !!errors[key] }">{{ errors[key] }}</div>
+            </div>
           </div>
           <div class="mask-item">
             <button class="delete-button" @click="deleteNode">delete</button>
