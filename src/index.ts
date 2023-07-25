@@ -8,6 +8,7 @@ import {
   saveNodeData,
   saveProject,
   saveStyles,
+  saveValidationSchemaExport,
   saveValidationSchemas,
 } from 'utils/file';
 import { MetaNode } from 'model/MetaNode';
@@ -34,6 +35,7 @@ const generateEditorData = async () => {
   saveGraphSchema(nodeTypes);
   saveEnum(nodeTypes);
   saveNodeData(nodeTypes);
+  saveValidationSchemaExport(nodeTypes);
   // style
   saveStyles(nodeTypes);
 

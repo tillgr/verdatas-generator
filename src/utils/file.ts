@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { Node } from 'ts-tree-structure';
 import { MetaNode } from 'model/MetaNode';
-import { renderSchemas } from 'utils/schema';
+import { renderExport, renderSchemas } from 'utils/schema';
 import { Project } from 'ts-morph';
 import { Child } from 'model/Child';
 import { renderNodeData } from 'utils/model';
@@ -59,6 +59,17 @@ export const saveValidationSchemas = (nodeTypes: Node<MetaNode>[]) => {
     );
     outputFile.formatText(formatOptions);
   });
+};
+
+export const saveValidationSchemaExport = (nodeTypes: Node<MetaNode>[]) => {
+  const fileContent = renderExport(nodeTypes);
+
+  const outputFile = project.createSourceFile(
+    `${OUTPUT_DIR}/assets/schema/index.ts`,
+    fileContent,
+    { overwrite: true }
+  );
+  outputFile.formatText(formatOptions);
 };
 
 const stringify = (obj: Node<MetaNode>[]) => {

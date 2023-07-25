@@ -24,6 +24,13 @@ export const edgeContainsNodeType = (edge: GraphEdge, type?: string) => {
   return edge.sourceNode.type === type || edge.targetNode.type === type;
 };
 
+const validateChildrenBySchema = (nodeType: NodeType, children: NodeType[]) => {
+  const schema = schemas.children[nodeType];
+
+  if (!schema) return true;
+  return !schema.validate(children).error;
+};
+
 const matchNodeTypes = (
   connectionId: string,
   currentId: string,
@@ -46,7 +53,7 @@ const matchNodeTypes = (
     (edge: GraphEdge) => edge.targetNode.id === connectionId || edge.sourceNode.id === connectionId
   );
   // map to types
-  const connectionChildren = connectionEdges
+  const connectionChildren: NodeType[] = connectionEdges
     .map((edge: GraphEdge) => {
       if (edge.targetNode.id === connectionId) return edge.sourceNode.type.toLowerCase() as NodeType;
       return edge.targetNode.type.toLowerCase() as NodeType;
@@ -56,14 +63,9 @@ const matchNodeTypes = (
   // add potential child candidate
   connectionChildren.push(currentNode.type);
   // validate with type specific children schema
-  const checkIfChild = () => {
-    const schema = schemas.children[connectionNode.type];
+  const isChild = validateChildrenBySchema(connectionNode.type, connectionChildren);
 
-    if (!schema) return true;
-    return !schema.validate(connectionChildren).error;
-  };
-
-  return isParent || checkIfChild();
+  return isParent || isChild;
 };
 
 const checkForMultipleParents = (
