@@ -10,7 +10,7 @@ export const renderSchemas = (
   children?: Child[]
 ) => {
   const view = {
-    type,
+    type: type.toLowerCase(),
     attributesSchema:
       !!attributes?.length && renderAttributesSchema(attributes),
     childrenSchema: !!children?.length && renderChildrenSchema(children),
@@ -21,11 +21,11 @@ export const renderSchemas = (
     import * as Joi from 'joi';
     
     {{#attributesSchema}}
-    export const {{type}}_Attributes_Schema: Joi.ObjectSchema = {{attributesSchema}}
+    export const {{type}}_attributes_schema: Joi.ObjectSchema = {{attributesSchema}}
     {{/attributesSchema}}
       
     {{#childrenSchema}}
-    export const {{type}}_Children_Schema: Joi.ArraySchema = {{childrenSchema}}
+    export const {{type}}_children_schema: Joi.ArraySchema = {{childrenSchema}}
     {{/childrenSchema}}
     `,
     view

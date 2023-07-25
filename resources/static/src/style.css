@@ -79,21 +79,12 @@ h2 {
 }
 
 .validationflow .vue-flow__node-custominput .vue-flow__handle {
-  background: #e6e6e9
+  background: #e6e6e9;
 }
 
 .validationflow .vue-flow__node-custominput {
   background: white;
 }
-
-.validationflow .vue-flow__handle-connecting {
-  background: #ff6060
-}
-
-.validationflow .vue-flow__handle-valid {
-  background: #55dd99
-}
-
 
 .dndflow {
   flex-direction: column;
@@ -105,7 +96,7 @@ h2 {
   border-right: 1px solid #eee;
   padding: 15px 10px;
   font-size: 12px;
-  background: rgba(239, 239, 239, 0.75)
+  background: #efefef;
 }
 
 .dndflow aside > * {
@@ -134,6 +125,20 @@ h2 {
   top: 0;
   left: 0;
   border-radius: 10px;
+}
+
+.vue-flow__handle {
+  height: 10px;
+  width: 10px;
+  background-color: #efefef;
+}
+
+.vue-flow__handle-bottom{
+  bottom: -6px;
+}
+
+.vue-flow__handle-top{
+  top: -6px;
 }
 
 @media screen and (min-width: 768px) {

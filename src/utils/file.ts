@@ -53,7 +53,7 @@ export const saveValidationSchemas = (nodeTypes: Node<MetaNode>[]) => {
 
     const fileContent = renderSchemas(type, attributes, children);
     const outputFile = project.createSourceFile(
-      `${OUTPUT_DIR}/assets/schema/${node.model.type}_Schema.ts`,
+      `${OUTPUT_DIR}/assets/schema/${node.model.type.toLowerCase()}_schema.ts`,
       fileContent,
       { overwrite: true }
     );
@@ -68,7 +68,10 @@ const stringify = (obj: Node<MetaNode>[]) => {
         return value.model.type;
       case 'children':
         if (!value.length) return;
-        return value.map((node: Node<MetaNode>) => node?.model?.type);
+        return value.map((node: Node<MetaNode>) => {
+          const { type, count } = node?.model;
+          return { type, count };
+        });
       case 'model':
         const { children, ...rest } = value;
         return rest;

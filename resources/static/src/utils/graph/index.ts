@@ -1,6 +1,6 @@
 import { Connection, GraphEdge, GraphNode, Node } from '@vue-flow/core';
 import { Ref } from 'vue';
-import { GraphSchema } from 'assets/schema';
+import { GraphSchema, schemas } from 'assets/schema';
 import { NodeData, NodeType } from 'assets/model';
 
 const getTypeInformation = (type: NodeType) => {
@@ -11,7 +11,7 @@ const getTypeInformation = (type: NodeType) => {
 };
 
 export const getNodeById = (id: string, nodes: Ref<GraphNode<any, any>[]>): Node | undefined => {
-  return nodes.value.filter((el) => {
+  return nodes.value.filter((el: GraphNode) => {
     return el.id === id;
   })[0];
 };
@@ -24,9 +24,46 @@ export const edgeContainsNodeType = (edge: GraphEdge, type?: string) => {
   return edge.sourceNode.type === type || edge.targetNode.type === type;
 };
 
-const matchNodeTypes = (id: string, nodes: Ref<GraphNode<any, any>[]>, types?: (NodeType | undefined)[]): boolean => {
-  const node = getNodeById(id, nodes);
-  return types?.some((type) => type?.toLowerCase() === node?.type?.toLowerCase()) || false;
+const matchNodeTypes = (
+  connectionId: string,
+  currentId: string,
+  nodes: Ref<GraphNode<any, any>[]>,
+  edges: Ref<GraphEdge<any, any>[]>
+): boolean => {
+  const connectionNode = getNodeById(connectionId, nodes);
+  const currentNode = getNodeById(currentId, nodes);
+  if (!connectionNode || !currentNode) {
+    throw new Error(`Invalid source or target as connection for validating match of node types.`);
+  }
+
+  // CASE: parent -> child
+  const { parent: connectionParent } = getTypeInformation(connectionNode?.type as NodeType);
+  const isParent = currentNode.type === connectionParent?.toLowerCase();
+
+  // CASE: child -> parent
+  // get all connections of connectionNode
+  const connectionEdges = edges.value.filter(
+    (edge: GraphEdge) => edge.targetNode.id === connectionId || edge.sourceNode.id === connectionId
+  );
+  // map to types
+  const connectionChildren = connectionEdges
+    .map((edge: GraphEdge) => {
+      if (edge.targetNode.id === connectionId) return edge.sourceNode.type.toLowerCase() as NodeType;
+      return edge.targetNode.type.toLowerCase() as NodeType;
+    })
+    // remove parent (only children left)
+    .filter((type: NodeType) => type !== connectionParent);
+  // add potential child candidate
+  connectionChildren.push(currentNode.type);
+  // validate with type specific children schema
+  const checkIfChild = () => {
+    const schema = schemas.children[connectionNode.type];
+
+    if (!schema) return true;
+    return !schema.validate(connectionChildren).error;
+  };
+
+  return isParent || checkIfChild();
 };
 
 const checkForMultipleParents = (
@@ -40,29 +77,23 @@ const checkForMultipleParents = (
   if (!(source && target)) {
     return false;
   }
-  const sourceParentType = getTypeInformation(source.type as NodeType).parent; // TODO done
+  const sourceParentType = getTypeInformation(source.type as NodeType).parent;
   const targetType = target.type;
 
   const child = targetType === sourceParentType ? source : target;
   return !edges.value.some(
-    (edge) =>
+    (edge: GraphEdge) =>
       edgeContainsNode(edge, child) && edgeContainsNodeType(edge, getTypeInformation(child.type as NodeType).parent)
   );
 };
 
-export const getValidationFunctions = (
-  type: NodeType,
-  nodesRef: Ref<GraphNode<any, any>[]>,
-  edgesRef: Ref<GraphEdge<any, any>[]>
-) => {
-  const { parent, children } = getTypeInformation(type); //TODO done
-
+export const getValidationFunctions = (nodesRef: Ref<GraphNode<any, any>[]>, edgesRef: Ref<GraphEdge<any, any>[]>) => {
   const isValidSourcePos = (connection: Connection) =>
-    matchNodeTypes(connection.source, nodesRef, [parent, children].flat()) && // TODO done
+    matchNodeTypes(connection.source, connection.target, nodesRef, edgesRef) &&
     checkForMultipleParents(connection, nodesRef, edgesRef);
 
   const isValidTargetPos = (connection: Connection) =>
-    matchNodeTypes(connection.target, nodesRef, [parent, children].flat()) && // TODO done
+    matchNodeTypes(connection.target, connection.source, nodesRef, edgesRef) &&
     checkForMultipleParents(connection, nodesRef, edgesRef);
 
   return {
@@ -87,7 +118,7 @@ export const createNode = (
   label?: string
 ): Node => {
   const data = NodeData[type];
-  const validationFunctions = getValidationFunctions(type, nodesRef, edgesRef);
+  const validationFunctions = getValidationFunctions(nodesRef, edgesRef);
 
   return {
     id,
