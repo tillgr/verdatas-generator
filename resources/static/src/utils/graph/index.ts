@@ -1,10 +1,12 @@
-import { Connection, GraphEdge, GraphNode, Node } from '@vue-flow/core';
+import { Connection, Edge, GraphEdge, GraphNode, Node } from '@vue-flow/core';
 import { Ref } from 'vue';
 import { GraphSchema, schemas } from 'assets/schema';
 import { NodeData, NodeType } from 'assets/model';
+import { d3Hierarchy, ImportSpacing } from 'utils/import';
+import { hierarchy, HierarchyPointLink, tree } from 'd3';
 
 const getTypeInformation = (type: NodeType) => {
-  const result = GraphSchema.filter((nodeType) => nodeType.model.type.toLowerCase() === type)[0];
+  const result = GraphSchema.filter((nodeType: NodeType) => nodeType.model.type.toLowerCase() === type)[0];
 
   if (!result) throw new Error('No type information found for provided node ' + type);
   return result;
@@ -132,47 +134,46 @@ export const createNode = (
   };
 };
 
-// const createEdge = (source: string, target: string): Edge => {
-//   const id = source + target;
-//
-//   return {
-//     id,
-//     source,
-//     target,
-//   };
-// };
+const createEdge = (source: string, target: string): Edge => {
+  const id = source + target;
 
-// TODO later
-// export const calculateTreeLayout = (
-//   hierarchyData: d3Hierarchy,
-//   nodesRef: Ref<GraphNode<any, any>[]>,
-//   edgesRef: Ref<GraphEdge<any, any>[]>
-// ) => {
-//   const root = hierarchy(hierarchyData);
-//   const _tree = tree().nodeSize(ImportSpacing)(root);
-//   const newNodes: Node[] = [];
-//   let newEdges: Edge[] = [];
-//
-//   try {
-//     _tree.each((node: any) => {
-//       const newNode = createNode(
-//         node.data.id,
-//         node.data.type.toLowerCase(),
-//         {
-//           x: node.x,
-//           y: node.y,
-//         },
-//         nodesRef,
-//         edgesRef
-//       );
-//       newNodes.push(newNode);
-//     });
-//
-//     newEdges = _tree.links().map((node: HierarchyPointLink<any>) => {
-//       return createEdge(node.source.data.id, node.target.data.id);
-//     });
-//   } catch (e) {
-//     console.error(e);
-//   }
-//   return { edges: newEdges, nodes: newNodes };
-// };
+  return {
+    id,
+    source,
+    target,
+  };
+};
+
+export const calculateTreeLayout = (
+  hierarchyData: d3Hierarchy,
+  nodesRef: Ref<GraphNode<any, any>[]>,
+  edgesRef: Ref<GraphEdge<any, any>[]>
+) => {
+  const root = hierarchy(hierarchyData);
+  const _tree = tree().nodeSize(ImportSpacing)(root);
+  const newNodes: Node[] = [];
+  let newEdges: Edge[] = [];
+
+  try {
+    _tree.each((node: any) => {
+      const newNode = createNode(
+        node.data.id,
+        node.data.type.toLowerCase(),
+        {
+          x: node.x,
+          y: node.y,
+        },
+        nodesRef,
+        edgesRef
+      );
+      newNodes.push(newNode);
+    });
+
+    newEdges = _tree.links().map((node: HierarchyPointLink<any>) => {
+      return createEdge(node.source.data.id, node.target.data.id);
+    });
+  } catch (e) {
+    console.error(e);
+  }
+  return { edges: newEdges, nodes: newNodes };
+};

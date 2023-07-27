@@ -7,5 +7,13 @@ export type MetaNode = {
     attributes?: Attribute[];
   };
   parent?: NodeType;
-  children?: NodeType[];
+  children?: Child[];
+};
+
+export type Child = {
+  type: NodeType;
+  count?: {
+    min?: number;
+    max?: number;
+  };
 };

@@ -104,8 +104,8 @@ export const saveGraphSchema = (nodeTypes: Node<MetaNode>[]) => {
   outputFile.formatText(formatOptions);
 };
 
-export const saveEnum = (nodeTypes: Node<MetaNode>[]) => {
-  const members = nodeTypes
+export const saveEnums = (nodeTypes: Node<MetaNode>[]) => {
+  const nodeTypeMembers = nodeTypes
     .map((node) => node.model.type)
     .map((type) => {
       return {
@@ -113,6 +113,13 @@ export const saveEnum = (nodeTypes: Node<MetaNode>[]) => {
         value: type.toLowerCase(),
       };
     });
+  const iliasMembers = nodeTypeMembers.map((member) => {
+    const { name } = member;
+    return {
+      name: name,
+      value: name.replace(/./, (c) => c.toLowerCase()),
+    };
+  });
   const outputFile = project.createSourceFile(
     `${OUTPUT_DIR}/assets/model/NodeType.ts`,
     undefined,
@@ -122,7 +129,12 @@ export const saveEnum = (nodeTypes: Node<MetaNode>[]) => {
   );
   outputFile.addEnum({
     name: 'NodeType',
-    members,
+    members: nodeTypeMembers,
+    isExported: true,
+  });
+  outputFile.addEnum({
+    name: 'IliasNodeType',
+    members: iliasMembers,
     isExported: true,
   });
   outputFile.formatText(formatOptions);

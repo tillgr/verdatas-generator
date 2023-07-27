@@ -3,7 +3,7 @@ import Mustache from 'mustache';
 import { createTree } from 'utils/tree';
 import {
   readJson,
-  saveEnum,
+  saveEnums,
   saveGraphSchema,
   saveNodeData,
   saveProject,
@@ -25,15 +25,16 @@ const generateEditorData = async () => {
   const fileContent = readJson();
   const root = createTree(fileContent);
   root.walk((node) => {
-    if (!nodeTypes.some((type) => type.model.type === node.model.type))
+    if (!nodeTypes.some((type) => type.model.type === node.model.type)) {
       nodeTypes.push(node);
+    }
     return true;
   });
 
   // assets
   saveValidationSchemas(nodeTypes);
   saveGraphSchema(nodeTypes);
-  saveEnum(nodeTypes);
+  saveEnums(nodeTypes);
   saveNodeData(nodeTypes);
   saveValidationSchemaExport(nodeTypes);
   // style

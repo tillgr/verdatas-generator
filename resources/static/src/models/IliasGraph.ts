@@ -2,17 +2,17 @@
 // TODO  later
 export type IliasGraph = {
   //TOPIC
-  modules: [Module];
+  [IliasNodeTypes.Modules]: Module[];
 } & hasId &
   otherKeys;
 
 export type Module = {
-  chapters: [Chapter];
+  [IliasNodeTypes.Chapters]: Chapter[];
 } & hasId &
   otherKeys;
 
 export type Chapter = {
-  [IliasNodeTypes.InteractiveTasks]: [InteractiveTask];
+  [IliasNodeTypes.InteractiveTasks]: InteractiveTask[];
 } & hasId &
   otherKeys;
 

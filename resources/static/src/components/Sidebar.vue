@@ -1,8 +1,12 @@
 <script lang="ts" setup>
-import { useVueFlow } from '@vue-flow/core';
+import { Node, useVueFlow } from '@vue-flow/core';
 import { NodeType } from 'assets/model/NodeType';
+import { VueFlowGraph } from 'models';
+import { filterJsonFile, parseJsonFile } from 'utils/import';
+import { calculateTreeLayout, getValidationFunctions } from 'utils/graph';
+import { IliasGraph } from 'models/IliasGraph';
 
-const { toObject /*, nodes, edges, removeNodes, addNodes, addEdges*/ } = useVueFlow();
+const { toObject, nodes, edges, removeNodes, addNodes, addEdges } = useVueFlow();
 
 const onDragStart = (event: DragEvent, type: NodeType) => {
   if (event.dataTransfer) {
@@ -22,45 +26,41 @@ const handleExport = () => {
   window.URL.revokeObjectURL(a.href);
 };
 
-// const handleImport = async (e: Event) => {
-//   const file = (<HTMLInputElement>e?.target).files?.[0];
-//   if (!file) return;
-//
-//   return await parseJsonFile(file);
-// };
+const handleImport = async (e: Event) => {
+  const file = (<HTMLInputElement>e?.target).files?.[0];
+  if (!file) return;
+
+  return await parseJsonFile(file);
+};
 
 // TODO later
-// const importGraph = async (e: Event) => {
-//   const file = <VueFlowGraph | undefined>await handleImport(e);
-//   if (!file) return;
-//
-//   removeNodes(nodes.value, true);
-//
-//   file.nodes.map((node: Node) => {
-//     if (!node.type || !Object.keys(NodeType).some((k) => k.toLowerCase() === node.type)) return;
-//     const data = {
-//       metaParentType: NodeModel[node.type as NodeType].metaParentType,
-//       metaChildType: NodeModel[node.type as NodeType].metaChildType,
-//     };
-//     const validationFunctions = getValidationFunctions(data, nodes, edges);
-//
-//     node = { ...node, ...validationFunctions };
-//     addNodes([node]);
-//   });
-//   addEdges(file.edges);
-// };
-//
-// const importIlias = async (e: Event) => {
-//   const file = <IliasGraph | undefined>await handleImport(e);
-//   if (!file) return;
-//
-//   const filtered = filterJsonFile(file);
-//   const { nodes: newNodes, edges: newEdges } = calculateTreeLayout(filtered, nodes, edges);
-//
-//   removeNodes(nodes.value, true);
-//   addNodes(newNodes);
-//   addEdges(newEdges);
-// };
+const importGraph = async (e: Event) => {
+  const file = <VueFlowGraph | undefined>await handleImport(e);
+  if (!file) return;
+
+  removeNodes(nodes.value, true);
+
+  file.nodes.map((node: Node) => {
+    if (!node.type || !Object.keys(NodeType).some((k) => k.toLowerCase() === node.type)) return;
+    const validationFunctions = getValidationFunctions(nodes, edges);
+
+    node = { ...node, ...validationFunctions };
+    addNodes([node]);
+  });
+  addEdges(file.edges);
+};
+
+const importIlias = async (e: Event) => {
+  const file = <IliasGraph | undefined>await handleImport(e); //TODO needs to be generic
+  if (!file) return;
+
+  const filtered = filterJsonFile(file);
+  const { nodes: newNodes, edges: newEdges } = calculateTreeLayout(filtered, nodes, edges);
+
+  removeNodes(nodes.value, true);
+  addNodes(newNodes);
+  addEdges(newEdges);
+};
 </script>
 
 <template>
@@ -80,14 +80,14 @@ const handleExport = () => {
     </div>
     <div class="export-section">
       <button class="export-button" @click="handleExport">Export graph</button>
-      <!--      <div class="file-input">-->
-      <!--        <label for="graph-input">Import graph</label>-->
-      <!--        <input type="file" id="selectFiles" accept=".json" name="graph-input" @change="(e) => importGraph(e)" />-->
-      <!--      </div>-->
-      <!--      <div class="file-input">-->
-      <!--        <label for="ilias-input">Import from ilias</label>-->
-      <!--        <input type="file" id="selectFiles" accept=".json" name="ilias-input" @change="(e) => importIlias(e)" />-->
-      <!--      </div>-->
+      <div class="file-input">
+        <label for="graph-input">Import graph</label>
+        <input type="file" id="selectFiles" accept=".json" name="graph-input" @change="(e) => importGraph(e)" />
+      </div>
+      <div class="file-input">
+        <label for="ilias-input">Import from ilias</label>
+        <input type="file" id="selectFiles" accept=".json" name="ilias-input" @change="(e) => importIlias(e)" />
+      </div>
     </div>
   </aside>
 </template>
