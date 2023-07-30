@@ -31,33 +31,38 @@ export type d3Hierarchy = {
 
 //rekursion nutzen
 
-type fileNode = {
-  [data: string | Partial<IliasNodeType>]: any;
-};
-
-const convertNode = (node: fileNode, type: NodeType, isRoot?: boolean): d3Hierarchy => {
-  let childTypes: IliasNodeType[] | undefined;
+const convertNode = (node: any, type: NodeType, isRoot?: boolean): d3Hierarchy => {
+  let childTypes: string[] | undefined;
   const makePlural = (type: IliasNodeType) => type + 's';
+  const makeSingular = (type: string) => (type = type.slice(0, -1));
 
   if (!!isRoot) {
     const { model } = getRoot();
-    childTypes = getChildTypes(model.type)?.map(makePlural) as IliasNodeType[];
+    childTypes = getChildTypes(model.type)?.map(makePlural);
   } else {
     childTypes = Object.values(IliasNodeType)
       .map(makePlural)
-      .filter((value) => Object.keys(node).includes(value)) as IliasNodeType[];
+      .filter((value) => Object.keys(node).includes(value));
   }
 
-  const children = childTypes?.map((key) => node[key]);
+  let children = childTypes
+    ?.map((type) => {
+      const childrenByType = node[type];
+      childrenByType.forEach((child) => (child.type = type.toLowerCase() as NodeType));
+      return childrenByType;
+    })
+    .flat();
+  const hasChildren = !!children?.length;
 
   node = {
     id: node.object_id,
-    type,
-    children,
+    type: !isRoot ? makeSingular(type.toLowerCase()) : type.toLowerCase(),
+    ...(hasChildren && { children }),
   };
 
-  node.children?.forEach((child) => (!!child ? convertNode(child, type) : undefined));
+  if (!hasChildren) return node;
 
+  node.children = node.children?.map((child) => (!!child ? convertNode(child, child.type) : undefined));
   return node;
 
   // attribute weglassen

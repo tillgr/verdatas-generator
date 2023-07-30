@@ -1,17 +1,16 @@
 import { Attribute } from 'assets/model/Attribute';
-import { NodeType } from 'assets/model/NodeType';
 
 export type MetaNode = {
   model: {
-    type: NodeType;
+    type: string;
     attributes?: Attribute[];
   };
-  parent?: NodeType;
+  parent?: string;
   children?: Child[];
 };
 
 export type Child = {
-  type: NodeType;
+  type: string;
   count?: {
     min?: number;
     max?: number;

@@ -6,7 +6,7 @@ import { filterJsonFile, parseJsonFile } from 'utils/import';
 import { calculateTreeLayout, getValidationFunctions } from 'utils/graph';
 import { IliasGraph } from 'models/IliasGraph';
 
-const { toObject, nodes, edges, removeNodes, addNodes, addEdges } = useVueFlow();
+const { toObject, nodes, edges, removeNodes, addNodes, addEdges, fitView, zoomTo } = useVueFlow();
 
 const onDragStart = (event: DragEvent, type: NodeType) => {
   if (event.dataTransfer) {
@@ -60,6 +60,8 @@ const importIlias = async (e: Event) => {
   removeNodes(nodes.value, true);
   addNodes(newNodes);
   addEdges(newEdges);
+  fitView({ padding: 0.2 });
+  zoomTo(1);
 };
 </script>
 
