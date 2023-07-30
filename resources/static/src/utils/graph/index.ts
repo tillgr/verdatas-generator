@@ -2,7 +2,7 @@ import { Connection, Edge, GraphEdge, GraphNode, Node } from '@vue-flow/core';
 import { Ref } from 'vue';
 import { GraphSchema, schemas } from 'assets/schema';
 import { NodeData, NodeType } from 'assets/model';
-import { d3Hierarchy, ImportSpacing } from 'utils/import';
+import { D3Hierarchy, ImportSpacing } from 'utils/import';
 import { hierarchy, HierarchyPointLink, tree } from 'd3';
 
 const getTypeInformation = (type: NodeType) => {
@@ -145,7 +145,7 @@ const createEdge = (source: string, target: string): Edge => {
 };
 
 export const calculateTreeLayout = (
-  hierarchyData: d3Hierarchy,
+  hierarchyData: D3Hierarchy,
   nodesRef: Ref<GraphNode<any, any>[]>,
   edgesRef: Ref<GraphEdge<any, any>[]>
 ) => {

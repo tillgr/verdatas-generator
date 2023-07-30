@@ -1,1 +1,1 @@
-export * from 'models/VueFlowGraph';
+export * from './VueFlowGraph';

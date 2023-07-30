@@ -4,7 +4,6 @@ import { NodeType } from 'assets/model/NodeType';
 import { VueFlowGraph } from 'models';
 import { filterJsonFile, parseJsonFile } from 'utils/import';
 import { calculateTreeLayout, getValidationFunctions } from 'utils/graph';
-import { IliasGraph } from 'models/IliasGraph';
 
 const { toObject, nodes, edges, removeNodes, addNodes, addEdges, fitView, zoomTo } = useVueFlow();
 
@@ -33,7 +32,6 @@ const handleImport = async (e: Event) => {
   return await parseJsonFile(file);
 };
 
-// TODO later
 const importGraph = async (e: Event) => {
   const file = <VueFlowGraph | undefined>await handleImport(e);
   if (!file) return;
@@ -51,7 +49,7 @@ const importGraph = async (e: Event) => {
 };
 
 const importIlias = async (e: Event) => {
-  const file = <IliasGraph | undefined>await handleImport(e); //TODO needs to be generic
+  const file = await handleImport(e);
   if (!file) return;
 
   const filtered = filterJsonFile(file);

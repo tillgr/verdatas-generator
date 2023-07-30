@@ -13,25 +13,12 @@ export const parseJsonFile = async (file: File) => {
   });
 };
 
-export type d3Hierarchy = {
+export type D3Hierarchy = {
   [data: string]: any;
   children?: any[];
 };
 
-// TODO needs to very generic
-// lookup aus types
-// root (kein parent)
-// child types von root
-
-// zugriff auf props im import nach child types
-// mapping zu d3 hierarchy
-// id: file.object_id,
-// type: 'topic',
-// children: modules,
-
-//rekursion nutzen
-
-const convertNode = (node: any, type: NodeType, isRoot?: boolean): d3Hierarchy => {
+const convertNode = (node: any, type: NodeType, isRoot?: boolean): D3Hierarchy => {
   let childTypes: string[] | undefined;
   const makePlural = (type: IliasNodeType) => type + 's';
   const makeSingular = (type: string) => (type = type.slice(0, -1));
@@ -64,11 +51,6 @@ const convertNode = (node: any, type: NodeType, isRoot?: boolean): d3Hierarchy =
 
   node.children = node.children?.map((child) => (!!child ? convertNode(child, child.type) : undefined));
   return node;
-
-  // attribute weglassen
-  // alle children in einem array zusammenfassen
-  // über child types in array gehen gehen
-  // für jedes child convertNode
 };
 
 const getRoot = () => GraphSchema.filter((node: MetaNode) => !node.parent)[0]!;
@@ -77,25 +59,7 @@ const getChildTypes = (nodeType: NodeType): IliasNodeType[] | undefined =>
     (child) => child.type.replace(/./, (c) => c.toLowerCase()) as IliasNodeType
   );
 
-export const filterJsonFile = (file: any): d3Hierarchy => {
+export const filterJsonFile = (file: any): D3Hierarchy => {
   const { model } = getRoot();
   return convertNode(file, model.type, true);
 };
-
-// export const filterJsonFile = (file: IliasGraph): d3Hierarchy => {
-//   const modules = file[IliasNodeType.Modules]?.map((module: Module) => {
-//     const chapters = module[IliasNodeType.Chapters]?.map((chapter: Chapter) => {
-//       const interactiveTasks = chapter[IliasNodeType.InteractiveTasks]?.map((task: InteractiveTask) => {
-//         return { id: task.object_id, type: NodeType.InteractiveTask };
-//       });
-//       return { id: chapter.object_id, type: NodeType.Chapter, children: interactiveTasks };
-//     });
-//     return { id: module.object_id, type: NodeType.Module, children: chapters };
-//   });
-//
-//   return {
-//     id: file.object_id,
-//     type: 'topic',
-//     children: modules,
-//   };
-// };
