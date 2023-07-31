@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { Node, useVueFlow } from '@vue-flow/core';
-import { NodeType } from 'assets/model/NodeType';
-import { VueFlowGraph } from 'models';
+import { NodeType, VueFlowGraph } from 'assets/model';
 import { filterJsonFile, parseJsonFile } from 'utils/import';
 import { calculateTreeLayout, getValidationFunctions } from 'utils/graph';
 

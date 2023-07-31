@@ -7,7 +7,6 @@ export type MetaNode = {
     min?: number;
     max?: number;
   };
-  parent: MetaNode;
   attributes?: Attribute[];
   children?: MetaNode[];
 };

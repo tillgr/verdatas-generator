@@ -23,6 +23,8 @@ const generateEditorData = async () => {
 
   const nodeTypes: Node<MetaNode>[] = [];
   const fileContent = readJson();
+  if (!fileContent) return;
+
   const root = createTree(fileContent);
   root.walk((node) => {
     if (!nodeTypes.some((type) => type.model.type === node.model.type)) {

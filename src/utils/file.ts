@@ -16,7 +16,7 @@ export const readJson = () => {
   try {
     const files = fs.readdirSync(INPUT_DIR);
     const file = files[0];
-    console.log('Reading file ', file);
+    console.log('Reading file:', file);
 
     let ext = path.extname(file).slice(1);
 
@@ -27,7 +27,7 @@ export const readJson = () => {
       const fileContent = fs.readFileSync(filePath, 'utf8');
       const json = JSON.parse(fileContent);
       if (!validate(json)) throw new Error('Invalid json');
-      return json;
+      return json as MetaNode;
     } catch (e) {
       return console.error('Error while reading file: ', e);
     }
