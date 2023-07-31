@@ -29,7 +29,7 @@ export const edgeContainsNodeType = (edge: GraphEdge, type?: string) => {
 const validateChildrenBySchema = (nodeType: NodeType, children: NodeType[]) => {
   const schema = schemas.children[nodeType];
 
-  if (!schema) return true;
+  if (!schema) return false;
   return !schema.validate(children).error;
 };
 
@@ -61,7 +61,7 @@ const matchNodeTypes = (
       return edge.targetNode.type.toLowerCase() as NodeType;
     })
     // remove parent (only children left)
-    .filter((type: NodeType) => type !== connectionParent);
+    .filter((type: NodeType) => type.toLowerCase() !== connectionParent?.toLowerCase());
   // add potential child candidate
   connectionChildren.push(currentNode.type);
   // validate with type specific children schema
