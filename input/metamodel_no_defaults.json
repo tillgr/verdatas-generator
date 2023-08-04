@@ -1,0 +1,82 @@
+{
+  "type": "Topic",
+  "color": "deepskyblue",
+  "attributes": [
+    {
+      "name": "a1",
+      "type": "string"
+    },
+    {
+      "name": "a2",
+      "type": "number"
+    }
+  ],
+  "children": [
+    {
+      "type": "PreparationModule",
+      "color": "orange",
+      "children": [
+        {
+          "type": "PreparationChapter",
+          "color": "yellow",
+          "count": {
+            "max": 1
+          },
+          "attributes": [
+            {
+              "name": "a1",
+              "type": "string"
+            },
+            {
+              "name": "a2",
+              "type": "boolean"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LearningModule",
+      "color": "deeppink",
+      "count": {
+        "max": 2
+      },
+      "children": [
+        {
+          "type": "LearningChapter",
+          "color": "darkblue",
+          "count": {
+            "max": 1
+          },
+          "attributes": [
+            {
+              "name": "a1",
+              "type": "string"
+            },
+            {
+              "name": "a2",
+              "type": "boolean"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "PracticeModule",
+      "color": "limegreen",
+      "count": {
+        "max": 1
+      },
+      "attributes": [
+        {
+          "name": "a1",
+          "type": "string"
+        },
+        {
+          "name": "a2",
+          "type": "boolean"
+        }
+      ]
+    }
+  ]
+}

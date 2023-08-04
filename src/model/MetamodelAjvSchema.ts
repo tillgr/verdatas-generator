@@ -27,7 +27,7 @@ export const MetamodelAjvSchema = {
       uniqueItems: true,
       items: {
         type: 'object',
-        required: ['name', 'value', 'type'],
+        required: ['name', 'type'],
         properties: {
           name: {
             type: 'string',

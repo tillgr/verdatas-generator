@@ -2,6 +2,6 @@ export type AttributeType = string | number | boolean;
 export type AttributeString = 'string' | 'number' | 'boolean';
 export type Attribute = {
   name: string;
-  value: AttributeType;
+  value?: AttributeType;
   type: AttributeString;
 };
