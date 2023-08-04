@@ -1,7 +1,7 @@
 import { Attribute } from 'model/Attribute';
 
 export type MetaNode = {
-  type: string;
+  type: string; // PascalCase
   color: string;
   count?: {
     min?: number;

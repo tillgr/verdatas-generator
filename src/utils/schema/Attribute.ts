@@ -1,10 +1,11 @@
 import Mustache from 'mustache';
-import { Attribute } from 'model/Attribute';
+import { Attribute, AttributeString, AttributeType } from 'model/Attribute';
+import { getDefaultValue } from 'utils/helpers';
 
 const renderAttribute = (
   name: string,
-  type: 'string' | 'number' | 'boolean',
-  value?: string | number | boolean
+  type: AttributeString,
+  value?: AttributeType
 ) => {
   return Mustache.render(
     `
@@ -15,14 +16,7 @@ const renderAttribute = (
       type,
       value: () => {
         if (!value) {
-          switch (type) {
-            case 'string':
-              return '';
-            case 'number':
-              return 0;
-            case 'boolean':
-              return false;
-          }
+          getDefaultValue(type);
         }
         if (typeof value === 'string') return `'${value}'`;
         return value;

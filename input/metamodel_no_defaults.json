@@ -4,10 +4,12 @@
   "attributes": [
     {
       "name": "a1",
+      "value": "",
       "type": "string"
     },
     {
       "name": "a2",
+      "value": 0,
       "type": "number"
     }
   ],
@@ -80,3 +82,4 @@
     }
   ]
 }
+

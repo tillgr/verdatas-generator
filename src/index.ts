@@ -13,6 +13,7 @@ import {
 } from 'utils/file';
 import { MetaNode } from 'model/MetaNode';
 import fs from 'fs/promises';
+import { getDefaultValue } from 'utils/helpers';
 
 const PROJECT_NAME = 'verdatas-graph';
 
@@ -28,6 +29,12 @@ const generateEditorData = async () => {
   const root = createTree(fileContent);
   root.walk((node) => {
     if (!nodeTypes.some((type) => type.model.type === node.model.type)) {
+      node.model.attributes?.forEach((attribute) => {
+        if (attribute.value === undefined) {
+          attribute.value = getDefaultValue(attribute.type);
+        }
+      });
+
       nodeTypes.push(node);
     }
     return true;
