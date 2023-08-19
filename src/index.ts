@@ -55,29 +55,29 @@ const generateEditorData = async () => {
 const paths = {
   static: {
     source: 'static',
-    destination: `${PROJECT_NAME}`,
+    target: `${PROJECT_NAME}`,
   },
   dynamic: {
     assets: {
       source: 'dynamic/assets',
-      destination: `${PROJECT_NAME}/src/assets`,
+      target: `${PROJECT_NAME}/src/assets`,
     },
     style: {
       source: 'dynamic/style',
-      destination: `${PROJECT_NAME}/src`,
+      target: `${PROJECT_NAME}/src`,
     },
   },
 };
 
 type Paths = {
   source: string;
-  destination: string;
+  target: string;
 };
 
 const copyDataByPath = async (paths: Paths) => {
-  const { source, destination } = paths;
+  const { source, target } = paths;
   try {
-    await fs.cp(`resources/${source}`, `output/${destination}`, {
+    await fs.cp(`resources/${source}`, `output/${target}`, {
       recursive: true,
     });
   } catch (e) {
