@@ -84,7 +84,7 @@ const importIlias = async (e: Event) => {
         <input type="file" id="selectFiles" accept=".json" name="graph-input" @change="(e) => importGraph(e)" />
       </div>
       <div class="file-input">
-        <label for="ilias-input">Import from ilias</label>
+        <label for="ilias-input">Import from LMS</label>
         <input type="file" id="selectFiles" accept=".json" name="ilias-input" @change="(e) => importIlias(e)" />
       </div>
     </div>
