@@ -23,7 +23,10 @@ export const edgeContainsNode = (edge: GraphEdge, node: Node) => {
 };
 export const edgeContainsNodeType = (edge: GraphEdge, type?: string) => {
   if (!type) return false;
-  return edge.sourceNode.type === type || edge.targetNode.type === type;
+  return (
+    edge.sourceNode.type.toLowerCase() === type.toLowerCase() ||
+    edge.targetNode.type.toLowerCase() === type.toLowerCase()
+  );
 };
 
 const validateChildrenBySchema = (nodeType: NodeType, children: NodeType[]) => {
